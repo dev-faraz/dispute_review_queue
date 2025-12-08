@@ -1,8 +1,22 @@
-#!/bin/bash -e
+#!/bin/bash
+set -e
 
-# If running the rails server then create or migrate existing database
-if [ "${@: -2:1}" == "./bin/rails" ] && [ "${@: -1:1}" == "server" ]; then
-  ./bin/rails db:prepare
+until pg_isready -h db -p 5432 -U postgres; do
+  echo "Waiting for PostgreSQL..."
+  sleep 2
+done
+
+echo "PostgreSQL is up — running Rails setup..."
+
+if ! bundle exec rails runner "ActiveRecord::Base.connection" 2>/dev/null; then
+  echo "Database doesn't exist or is empty — running setup..."
+  bundle exec rails db:create db:schema:load
+  # bundle exec rails db:seed
+else
+  echo "Database exists — running migrations..."
+  bundle exec rails db:migrate
 fi
 
-exec "${@}"
+echo "Setup complete! Starting app..."
+
+exec "$@"

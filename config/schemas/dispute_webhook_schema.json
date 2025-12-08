@@ -1,0 +1,42 @@
+{
+  "title": "Dispute Webhook Event",
+  "type": "object",
+  "required": ["id", "type", "data"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^evt_[A-Za-z0-9]+$",
+      "description": "Event ID"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "charge.dispute.created",
+        "charge.dispute.updated",
+        "charge.dispute.closed"
+      ]
+    },
+    "data": {
+      "type": "object",
+      "required": ["object"],
+      "properties": {
+        "object": {
+          "type": "object",
+          "required": ["id", "charge", "amount", "currency", "status", "created"],
+          "properties": {
+            "id": { "type": "string", "pattern": "^dp_" },
+            "charge": { "type": "string", "pattern": "^ch_" },
+            "amount": { "type": "integer", "minimum": 1 },
+            "currency": { "type": "string", "pattern": "^[a-z]{3}$" },
+            "status": {
+              "type": "string",
+              "enum": ["needs_response", "under_review", "won", "lost"]
+            },
+            "created": { "type": "integer" }
+          }
+        }
+      }
+    }
+  },
+  "additionalProperties": true
+}
