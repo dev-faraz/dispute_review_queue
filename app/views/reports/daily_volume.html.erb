@@ -1,0 +1,72 @@
+<div class="max-w-6xl mx-auto p-6">
+  <h1 class="text-3xl font-bold mb-8">Daily Dispute Volume</h1>
+
+  <div class="bg-white rounded-lg shadow p-6 mb-8">
+    <%= form_with url: reports_daily_volume_path, method: :get, class: "flex gap-4" do |f| %>
+      <%= date_field_tag :from, @from, class: "px-4 py-2 border rounded" %>
+      <span class="self-center">to</span>
+      <%= date_field_tag :to, @to, class: "px-4 py-2 border rounded" %>
+      <%= submit_tag "Update", class: "px-6 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700" %>
+    <% end %>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <div class="bg-white rounded-lg shadow p-6">
+      <h2 class="text-xl font-semibold mb-4">Volume & Amount Trend</h2>
+      <canvas id="volumeChart" width="800" height="500" style="max-width: 800px; max-height: 500px;"></canvas>
+    </div>
+
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+      <table class="min-w-full">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-6 py-3 text-left">Date</th>
+            <th class="px-6 py-3 text-right">Disputes</th>
+            <th class="px-6 py-3 text-right">Total Amount</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+          <% @chart_data.each do |day| %>
+            <tr>
+              <td class="px-6 py-4"><%= user_date(day[:date]) %></td>
+              <td class="px-6 py-4 text-right font-medium"><%= day[:count] %></td>
+              <td class="px-6 py-4 text-right"><%= number_to_currency(day[:amount]) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  window.ctx = document.getElementById('volumeChart').getContext('2d');
+  new Chart(window.ctx, {
+    type: 'line',
+    data: {
+      labels: <%= @chart_data.map { |d| "'#{d[:date]}'" }.to_json.html_safe %>,
+      datasets: [
+        {
+          label: 'Dispute Count',
+          data: <%= @chart_data.map{ |d| d[:count] }.to_json.html_safe %>,
+          borderColor: '#6366f1',
+          yAxisID: 'y'
+        },
+        {
+          label: 'Amount ($)',
+          data: <%= @chart_data.map{ |d| d[:amount] }.to_json.html_safe %>,
+          borderColor: '#10b981',
+          yAxisID: 'y1'
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: { position: 'left' },
+        y1: { position: 'right', grid: { drawOnChartArea: false } }
+      }
+    }
+  });
+</script>

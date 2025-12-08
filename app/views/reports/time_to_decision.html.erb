@@ -1,0 +1,37 @@
+<div class="max-w-5xl mx-auto p-6">
+  <h1 class="text-3xl font-bold mb-8">Time to Decision (p50 / p90)</h1>
+
+  <div class="bg-white rounded-lg shadow p-6 mb-8">
+    <p class="text-gray-600">Duration from dispute opened to final decision (won/lost), grouped by week.</p>
+    <p class="text-sm text-gray-500 mt-2">In <strong><%= current_user.time_zone %></strong> time zone</p>
+  </div>
+
+  <div class="bg-white rounded-lg shadow overflow-hidden">
+    <table class="min-w-full">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="px-6 py-3 text-left">Week</th>
+          <th class="px-6 py-3 text-center">Disputes</th>
+          <th class="px-6 py-3 text-center">p50 (hours)</th>
+          <th class="px-6 py-3 text-center">p90 (hours)</th>
+          <th class="px-6 py-3 text-center">p90 vs p50</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        <% @chart_data.each do |week| %>
+          <tr class="<%= week[:p90_hours] > 72 ? 'bg-red-50' : '' %>">
+            <td class="px-6 py-4 font-medium"><%= week[:week] %></td>
+            <td class="px-6 py-4 text-center"><%= week[:count] %></td>
+            <td class="px-6 py-4 text-center"><%= week[:p50_hours] %></td>
+            <td class="px-6 py-4 text-center font-bold <%= week[:p90_hours] > 72 ? 'text-red-600' : '' %>">
+              <%= week[:p90_hours] %>
+            </td>
+            <td class="px-6 py-4 text-center text-sm">
+              <%= (week[:p90_hours] / week[:p50_hours].to_f).round(1) %>x
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,86 @@
+<div class="max-w-4xl mx-auto p-6">
+  <h1 class="text-3xl font-bold mb-6">Dispute <%= @dispute.external_id %></h1>
+
+  <div class="bg-white rounded-lg shadow p-6 mb-6">
+    <div class="grid grid-cols-2 gap-4">
+      <div><strong>Charge:</strong> <%= @dispute.charge.external_id %></div>
+      <div><strong>Amount:</strong> <%= number_to_currency(@dispute.amount_cents / 100.0) %></div>
+      <div><strong>Status:</strong>
+        <span class="px-3 py-1 rounded-full text-white text-sm <%=
+          case @dispute.status
+          when 'needs_response' then 'bg-orange-500'
+          when 'under_review'   then 'bg-blue-500'
+          when 'won'            then 'bg-green-500'
+          when 'lost'           then 'bg-red-500'
+          end %>">
+          <%= @dispute.status.humanize %>
+        </span>
+      </div>
+      <div><strong>Opened:</strong> <%= @dispute.opened_at&.strftime("%b %d, %Y %H:%M") %></div>
+    </div>
+  </div>
+
+  <% if policy(@dispute).update? %>
+    <div class="bg-gray-50 rounded-lg p-6 mb-6">
+      <h2 class="text-xl font-semibold mb-4">Take Action</h2>
+
+      <%= form_with url: transition_dispute_path(@dispute), method: :patch, class: "space-y-4" do |f| %>
+        <div class="grid grid-cols-2 gap-4">
+          <% if @dispute.may_submit_evidence? %>
+            <%= button_tag "Submit Evidence", name: "action_type", value: "submit_evidence", class: "btn-primary" %>
+          <% end %>
+          <% if @dispute.may_decide_win? %>
+            <%= button_tag "Win Dispute", name: "action_type", value: "decide_win", class: "btn-success" %>
+          <% end %>
+          <% if @dispute.may_decide_lose? %>
+            <%= button_tag "Lose Dispute", name: "action_type", value: "decide_lose", class: "btn-danger" %>
+          <% end %>
+          <% if @dispute.may_reopen? %>
+            <%= button_tag "Reopen", name: "action_type", value: "reopen", class: "btn-warning" %>
+          <% end %>
+        </div>
+
+        <% if @dispute.may_reopen? %>
+          <div>
+            <%= text_area_tag :note, nil, placeholder: "Justification required for reopen", class: "w-full p-2 border rounded" %>
+          </div>
+        <% end %>
+
+        <% if @dispute.may_submit_evidence? || @dispute.may_reopen? %>
+          <%= submit_tag "Confirm Action", class: "btn-primary mt-4" %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% if policy(@dispute).attach_evidence? %>
+    <div class="bg-blue-50 rounded-lg p-6 mb-6">
+      <h3 class="text-lg font-semibold mb-4">Attach Evidence</h3>
+      <%= form_with url: attach_evidence_dispute_path(@dispute), multipart: true, method: :patch do |f| %>
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+        <%= select_tag :kind, options_for_select(["receipt", "email", "screenshot", "note"]), class: "mr-2" %>
+        <%= file_field_tag :file, accept: ".pdf,.png,.jpg,.txt" %>
+        <%= text_area_tag :note, nil, placeholder: "Evidence Note", required: true, class: "w-full mt-2 p-2 border rounded" %>
+        <%= submit_tag "Upload", class: "btn-primary mt-4" %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="bg-white rounded-lg shadow p-6">
+    <h2 class="text-xl font-bold mb-4">Audit Trail</h2>
+    <div class="space-y-3">
+      <% @case_actions.each do |action| %>
+        <div class="border-l-4 border-gray-300 pl-4 py-2">
+          <div class="flex justify-between">
+            <strong><%= action.actor.email || action.actor.to_s %></strong>
+            <span class="text-sm text-gray-500"><%= user_time(action.created_at) %></span>
+          </div>
+          <div><%= action.action.humanize %></div>
+          <% if action.note.present? %>
+            <div class="text-sm text-gray-600 mt-1">"<%= action.note %>"</div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
