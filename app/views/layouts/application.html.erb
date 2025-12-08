@@ -6,13 +6,13 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag "tailwind", "inter-font", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
+    <link href="https://rsms.me/inter/inter.css" rel="stylesheet">
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body class="h-full">
-    <!-- Top Bar -->
     <% if user_signed_in? %>
       <div class="bg-indigo-800 text-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -34,7 +34,6 @@
       </div>
     <% end %>
 
-    <!-- Flash Messages -->
     <% if notice || alert %>
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
         <% if notice %>
@@ -46,7 +45,6 @@
       </div>
     <% end %>
 
-    <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <%= yield %>
     </main>
