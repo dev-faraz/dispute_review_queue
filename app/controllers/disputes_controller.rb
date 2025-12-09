@@ -19,12 +19,14 @@ class DisputesController < ApplicationController
       kind: params[:kind].presence || "note",
       metadata: { note: params[:note] }.compact
     )
+    note = params[:note]
 
     if params[:file].present?
       evidence.file.attach(params[:file])
+      note = "#{params[:note]}: #{evidence.file.filename}"
     end
 
-    @dispute.create_audit!("evidence_attached", note: params[:note])
+    @dispute.create_audit!("evidence_attached", note: note)
     redirect_to @dispute, notice: "Evidence attached successfully"
   end
 
