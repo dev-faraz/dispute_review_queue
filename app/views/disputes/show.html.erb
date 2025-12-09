@@ -43,10 +43,6 @@
             <%= text_area_tag :note, nil, placeholder: "Justification required for reopen", class: "w-full p-2 border rounded" %>
           </div>
         <% end %>
-
-        <% if @dispute.may_submit_evidence? || @dispute.may_reopen? %>
-          <%= submit_tag "Confirm Action", class: "btn-primary mt-4" %>
-        <% end %>
       <% end %>
     </div>
   <% end %>

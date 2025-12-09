@@ -58,7 +58,7 @@ class Dispute < ApplicationRecord
       return false
     end
 
-    occurred_at = Time.at(payload["data"]["object"]["created"].to_i)
+    occurred_at = Time.at(payload["data"]["object"]["created"].to_i).utc
     return false if last_event_id && occurred_at < self.updated_at
 
     transaction do
