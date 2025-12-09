@@ -1,4 +1,4 @@
-# Dispure Review Queue
+# Dispute Review Queue
 
 ## Features Implemented
 
