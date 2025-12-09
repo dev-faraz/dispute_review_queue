@@ -26,9 +26,7 @@
 
       <%= form_with url: transition_dispute_path(@dispute), method: :patch, class: "space-y-4" do |f| %>
         <div class="grid grid-cols-2 gap-4">
-          <% if @dispute.may_submit_evidence? %>
-            <%= button_tag "Submit Evidence", name: "action_type", value: "submit_evidence", class: "btn-primary" %>
-          <% end %>
+
           <% if @dispute.may_decide_win? %>
             <%= button_tag "Win Dispute", name: "action_type", value: "decide_win", class: "btn-success" %>
           <% end %>
@@ -58,8 +56,8 @@
       <h3 class="text-lg font-semibold mb-4">Attach Evidence</h3>
       <%= form_with url: attach_evidence_dispute_path(@dispute), multipart: true, method: :patch do |f| %>
         <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-        <%= select_tag :kind, options_for_select(["receipt", "email", "screenshot", "note"]), class: "mr-2" %>
-        <%= file_field_tag :file, accept: ".pdf,.png,.jpg,.txt" %>
+        <%= select_tag :kind, options_for_select(["Receipt", "Email", "Screenshot", "Note"]), class: "mr-2 evidence-select" %>
+        <%= file_field_tag :file, accept: ".pdf,.png,.jpg,.txt", class: "file-upload" %>
         <%= text_area_tag :note, nil, placeholder: "Evidence Note", required: true, class: "w-full mt-2 p-2 border rounded" %>
         <%= submit_tag "Upload", class: "btn-primary mt-4" %>
       <% end %>

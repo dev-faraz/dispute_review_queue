@@ -1,1 +1,60 @@
 @import "tailwindcss";
+
+
+/* tailwind.css */
+.btn {
+  @apply px-4 py-2 rounded-xl font-semibold transition;
+
+  background-color: var(--color-blue-600);
+  color: var(--color-white);
+  padding: 10px 20px;
+  border-radius: 50px;
+}
+
+.btn-primary {
+  @apply bg-blue-600 text-white hover:bg-gray-700 active:bg-blue-800;
+  background-color: var(--color-blue-600);
+  color: var(--color-white);
+  padding: 10px 20px;
+  border-radius: 50px;
+  width: 149px
+}
+
+.btn-warning {
+  @apply bg-blue-600 text-white hover:bg-gray-700 active:bg-blue-800;
+  background-color: var(--color-gray-600);
+  color: var(--color-white);
+  padding: 10px 20px;
+  border-radius: 50px;
+  width: 149px
+}
+
+.btn-success {
+  @apply bg-blue-600 text-white hover:bg-gray-700 active:bg-blue-800;
+  background-color: var(--color-green-600);
+  color: var(--color-white);
+  padding: 10px 20px;
+  border-radius: 50px;
+  width: 149px
+}
+
+.btn-danger {
+  @apply bg-blue-600 text-white hover:bg-gray-700 active:bg-blue-800;
+  background-color: var(--color-red-600);
+  color: var(--color-white);
+  padding: 10px 20px;
+  border-radius: 50px;
+  width: 149px
+}
+
+.evidence-select {
+  background-color: #e7e0e0;
+  border-radius: 6px;
+  padding: 4px 8px;
+}
+
+.file-upload {
+  background-color: white;
+  border-radius: 3px;
+  padding: 3px;
+}
