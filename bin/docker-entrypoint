@@ -15,6 +15,7 @@ if ! bundle exec rails runner "ActiveRecord::Base.connection" 2>/dev/null; then
 else
   echo "Database exists — running migrations..."
   bundle exec rails db:migrate
+  bundle exec rails db:seed
 fi
 
 echo "Setup complete! Starting app..."

@@ -39,17 +39,12 @@ cp .env.example .env
 
 # 3. Install tailwind css
 
-rails importmap:install
+rails importmap:install (Enter no in case of any conflicts file)
 rails tailwindcss:install
 
 # 4. Start everything (first time builds images)
 docker-compose up --build
 
-docker-compose exec web sh
-
-# Now inside docker shell - run db:seed`
-
-bundle exec rails db:seed
 ```
 
 ## Default Users (created via seed file)
