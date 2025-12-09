@@ -37,12 +37,17 @@ cd dispute_review_queue
 cp .env.example .env
 # Edit .env and set your DATABASE_PASSWORD
 
-# 3. Start everything (first time builds images)
+# 3. Install tailwind css
+
+rails importmap:install
+rails tailwindcss:install
+
+# 4. Start everything (first time builds images)
 docker-compose up --build
 
 docker-compose exec web sh
 
-# Now inside docker shell - run db:seed
+# Now inside docker shell - run db:seed`
 
 bundle exec rails db:seed
 ```
@@ -75,14 +80,14 @@ docker-compose exec web ./simulate_dispute_flow.rb
 docker-compose exec web bash
 
 # Rails console
-rails console
+bundle exec rails console
 
 # Run migrations / seed
-rails db:migrate
-rails db:seed
+bundle exec rails db:migrate
+bundle exec rails db:seed
 
 # Reset everything
-rails db:drop db:create db:migrate db:seed
+bundle exec rails db:drop db:create db:migrate db:seed
 ```
 
 ## Key URLs
