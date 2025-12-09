@@ -4,25 +4,12 @@ set -e
 
 echo "Installing TailwindCSS + Importmap (only once)..."
 
-# Install Importmap (skip if already exists)
-if ! grep -q "importmap" config/importmap.rb 2>/dev/null; then
-  echo "Installing Importmap..."
-  bundle exec rails importmap:install << 'EOF'
-n
-EOF
-else
-  echo "Importmap already installed"
-fi
+echo "Installing Importmap..."
+yes "n" | bundle exec rails importmap:install
 
-# Install TailwindCSS (skip if already exists)
-if ! grep -q "tailwind" app/assets/stylesheets/application.tailwind.css 2>/dev/null; then
-  echo "Installing TailwindCSS..."
-  bundle exec rails tailwindcss:install << 'EOF'
-n
-EOF
-else
-  echo "TailwindCSS already installed"
-fi
+
+echo "Installing TailwindCSS..."
+bundle exec rails tailwindcss:install
 
 
 until pg_isready -h db -p 5432 -U postgres; do
