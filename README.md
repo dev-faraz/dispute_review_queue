@@ -30,8 +30,8 @@
 
 ```bash
 # 1. Clone the project
-git clone https://github.com/dev-faraz/dispute_review_queue_development.git
-cd dispute_review_queue_development
+git clone https://github.com/dev-faraz/dispute_review_queue.git
+cd dispute_review_queue
 
 # 2. Copy and configure environment
 cp .env.example .env
