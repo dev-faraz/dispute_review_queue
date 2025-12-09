@@ -37,12 +37,7 @@ cd dispute_review_queue
 cp .env.example .env
 # Edit .env and set your DATABASE_PASSWORD
 
-# 3. Install tailwind css
-
-rails importmap:install (Enter no in case of any conflicts file)
-rails tailwindcss:install
-
-# 4. Start everything (first time builds images)
+# 3. Start everything (first time builds images)
 docker-compose up --build
 
 ```
