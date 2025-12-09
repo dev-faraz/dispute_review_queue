@@ -63,6 +63,32 @@ docker-compose exec web ./simulate_dispute_flow.rb
 - Reopens a lost dispute
 - Prints beautiful colored output
 
+## Generate Dispute Webhook Script
+
+```bash
+# Open shell inside container
+docker-compose exec web sh
+
+# Call this script for generating custom webhooks
+Usage: send_dispute_webhook.rb [options]
+        --type TYPE
+        --charge ID                  Charge external ID
+        --dispute ID                 Dispute external ID
+        --amount CENTS               Amount in cents
+        --status STATUS              For updated/closed: needs_response, under_review, won, lost
+    -h, --help                       Show help
+
+Examples:
+  # Create dispute
+  ./send_dispute_webhook.rb --type charge.dispute.created --charge ch_123 --dispute dp_456
+
+  # Update to under_review
+  ./send_dispute_webhook.rb --type charge.dispute.updated --dispute dp_456 --status under_review
+
+  # Close as lost
+  ./send_dispute_webhook.rb --type charge.dispute.closed --dispute dp_456 --status lost
+```
+
 ## Manual Commands (inside container)
 
 ```bash
