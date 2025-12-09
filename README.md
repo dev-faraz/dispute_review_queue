@@ -30,8 +30,8 @@
 
 ```bash
 # 1. Clone the project
-git clone https://github.com/dev-faraz/myapp.git
-cd myapp
+git clone https://github.com/dev-faraz/dispute_review_queue_development.git
+cd dispute_review_queue_development
 
 # 2. Copy and configure environment
 cp .env.example .env
@@ -39,6 +39,12 @@ cp .env.example .env
 
 # 3. Start everything (first time builds images)
 docker-compose up --build
+
+docker-compose exec web sh
+
+# Now inside docker shell - run db:seed
+
+bundle exec rails db:seed
 ```
 
 ## Default Users (created via seed file)

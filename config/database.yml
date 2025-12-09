@@ -22,13 +22,13 @@ default: &default
 
 development:
   <<: *default
-  database: myapp_development
+  database: dispute_review_queue_development
 
   # The specified database role being used to connect to PostgreSQL.
   # To create additional roles in PostgreSQL see `$ createuser --help`.
   # When left blank, PostgreSQL will use the default role. This is
   # the same name as the operating system user running Rails.
-  #username: myapp
+  #username: dev
 
   # The password associated with the PostgreSQL role (username).
   #password:
@@ -43,7 +43,7 @@ development:
   #port: 5432
 
   # Schema search path. The server defaults to $user,public
-  #schema_search_path: myapp,sharedapp,public
+  #schema_search_path: dispute_review_queue,sharedapp,public
 
   # Minimum log levels, in increasing order:
   #   debug5, debug4, debug3, debug2, debug1,
@@ -56,7 +56,7 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: myapp_test
+  database: dispute_review_queue_test
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -73,7 +73,7 @@ test:
 # URL environment variable explicitly:
 #
 #   production:
-#     url: <%= ENV["MY_APP_DATABASE_URL"] %>
+#     url: <%= ENV["DISPUTE_REVIEW_QUEUE_DATABASE_URL"] %>
 #
 # Connection URLs for non-primary databases can also be configured using
 # environment variables. The variable name is formed by concatenating the
@@ -87,18 +87,18 @@ test:
 production:
   primary: &primary_production
     <<: *default
-    database: myapp_production
-    username: myapp
-    password: <%= ENV["MYAPP_DATABASE_PASSWORD"] %>
+    database: dispute_review_queue_production
+    username: dev
+    password: <%= ENV["DATABASE_PASSWORD"] %>
   cache:
     <<: *primary_production
-    database: myapp_production_cache
+    database: dispute_review_queue_production_cache
     migrations_paths: db/cache_migrate
   queue:
     <<: *primary_production
-    database: myapp_production_queue
+    database: dispute_review_queue_production_queue
     migrations_paths: db/queue_migrate
   cable:
     <<: *primary_production
-    database: myapp_production_cable
+    database: dispute_review_queue_production_cable
     migrations_paths: db/cable_migrate

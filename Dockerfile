@@ -2,8 +2,8 @@
 # check=error=true
 
 # This Dockerfile is designed for production, not development. Use with Kamal or build'n'run by hand:
-# docker build -t myapp .
-# docker run -d -p 80:80 -e RAILS_MASTER_KEY=<value from config/master.key> --name myapp myapp
+# docker build -t dispute_review_queue_development .
+# docker run -d -p 80:80 -e RAILS_MASTER_KEY=<value from config/master.key> --name dispute_review_queue_development dispute_review_queue_development
 
 # For a containerized dev environment, see Dev Containers: https://guides.rubyonrails.org/getting_started_with_devcontainer.html
 
